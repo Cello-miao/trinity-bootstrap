@@ -1,0 +1,30 @@
+node_modules/
+.env
+.env.local
+.env.production
+.DS_Store
+dist/
+build/
+*.log
+logs/
+.vscode/
+.idea/
+
+# Database
+*.sqlite
+*.sqlite3
+database.sqlite
+
+# OS
+Thumbs.db
+
+# Testing
+coverage/
+
+# Production
+/frontend/build/
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
