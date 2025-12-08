@@ -15,7 +15,7 @@ A full-stack product management system with JWT authentication.
 ### Backend
 - Node.js 18
 - Express 5.2.1
-- Sequelize ORM with SQLite3
+- Sequelize ORM with PostgreSQL
 - JWT Authentication
 - Swagger/OpenAPI documentation
 - bcryptjs for password hashing
@@ -26,16 +26,46 @@ A full-stack product management system with JWT authentication.
 - React Context for state management
 - Modern CSS with animations
 
+### Database
+- PostgreSQL 16
+
 ## 📦 Installation
 
 ### Prerequisites
 - Node.js 18+
+- PostgreSQL 16+ (or use Docker)
 - npm or yarn
 
 ### Clone the repository
 ```bash
 git clone <your-repo-url>
 cd trinity-bootstrap
+```
+
+### Setup PostgreSQL Database
+
+#### Option 1: Local PostgreSQL
+```bash
+# Install PostgreSQL (Ubuntu/Debian)
+sudo apt install postgresql postgresql-contrib
+
+# Create database
+sudo -u postgres psql
+CREATE DATABASE trinity_bootstrap;
+CREATE USER postgres WITH PASSWORD 'postgres';
+GRANT ALL PRIVILEGES ON DATABASE trinity_bootstrap TO postgres;
+\q
+```
+
+#### Option 2: Use Docker
+```bash
+docker run -d \
+  --name trinity-postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=trinity_bootstrap \
+  -p 5432:5432 \
+  postgres:16-alpine
 ```
 
 ### Install dependencies
@@ -54,33 +84,35 @@ npm install
 
 ## 🚀 Quick Start
 
-### Method 1: Using start script (Recommended)
+### Method 1: Docker Compose (Recommended)
 ```bash
-./start.sh
+docker compose up
+```
+This will start PostgreSQL, backend, and frontend services automatically.
+
+### Method 2: Manual startup (3 terminals)
+
+#### Terminal 1 - PostgreSQL (if not using Docker)
+Make sure PostgreSQL is running:
+```bash
+sudo systemctl start postgresql
+# or
+docker run -d --name trinity-postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=trinity_bootstrap \
+  -p 5432:5432 postgres:16-alpine
 ```
 
-Stop services:
-```bash
-./stop.sh
-```
-
-### Method 2: Manual startup (2 terminals)
-
-#### Terminal 1 - Backend
+#### Terminal 2 - Backend
 ```bash
 cd backend
 npm run dev
 ```
 
-#### Terminal 2 - Frontend
+#### Terminal 3 - Frontend
 ```bash
 cd frontend
 PORT=3002 npm start
-```
-
-### Method 3: Docker Compose
-```bash
-docker compose up
 ```
 
 ## 🌐 Access
@@ -113,12 +145,27 @@ Create a `.env` file in the `backend` directory:
 ```env
 NODE_ENV=development
 PORT=3000
+
+# PostgreSQL Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=trinity_bootstrap
+DB_USER=postgres
+DB_PASSWORD=postgres
+
+# JWT Configuration
 JWT_SECRET=your-secret-key
 JWT_REFRESH_SECRET=your-refresh-secret-key
 JWT_EXPIRE=1h
+
+# CORS Configuration
+CORS_ORIGIN=http://localhost:3002
 ```
 
-**Note**: Use `start.sh` script to generate secure JWT secrets automatically.
+**Note**: Generate secure JWT secrets using:
+```bash
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+```
 
 ## 📖 Project Structure
 
@@ -151,7 +198,7 @@ trinity-bootstrap/
 
 ## 🐳 Docker Deployment
 
-Build and run with Docker Compose:
+Build and run with Docker Compose (includes PostgreSQL):
 
 ```bash
 docker compose up --build
@@ -160,6 +207,17 @@ docker compose up --build
 The application will be available at:
 - Frontend: http://localhost:3002
 - Backend: http://localhost:3000
+- PostgreSQL: localhost:5432
+
+Stop all services:
+```bash
+docker compose down
+```
+
+Remove volumes (delete database data):
+```bash
+docker compose down -v
+```
 
 ## 🧪 Development
 
@@ -192,16 +250,33 @@ This project is licensed under the MIT License.
 # Check what's using the port
 lsof -i :3000  # Backend
 lsof -i :3002  # Frontend
+lsof -i :5432  # PostgreSQL
 
 # Kill the process
 kill -9 <PID>
 ```
 
-### Database issues
+### Database connection issues
 ```bash
-# Reset database
-rm backend/database.sqlite
-# Restart backend to recreate
+# Check if PostgreSQL is running
+sudo systemctl status postgresql
+# or for Docker:
+docker ps | grep postgres
+
+# Reset database (Docker)
+docker compose down -v
+docker compose up -d postgres
+
+# Check PostgreSQL logs
+docker logs trinity-postgres
+```
+
+### Database migration issues
+```bash
+# Drop and recreate tables
+cd backend
+# The app will auto-sync on startup in development mode
+npm run dev
 ```
 
 ### Clear browser cache

@@ -10,11 +10,6 @@ logs/
 .vscode/
 .idea/
 
-# Database
-*.sqlite
-*.sqlite3
-database.sqlite
-
 # OS
 Thumbs.db
 
@@ -28,3 +23,8 @@ coverage/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Database
+*.sqlite
+*.sqlite3
+backend/database.sqlite
