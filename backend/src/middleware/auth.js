@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config({ path: require('path').join(__dirname, '../..', '.env') });
 
 // Generate access token
 const generateAccessToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+    expiresIn: process.env.JWT_EXPIRE || '1h',
   });
 };
 
