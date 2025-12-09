@@ -172,27 +172,68 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 trinity-bootstrap/
 ├── backend/
+│   ├── config/
+│   │   └── config.json          # Sequelize configuration
+│   ├── migrations/              # Database migrations
+│   ├── models/                  # Sequelize models (legacy)
+│   ├── seeders/                 # Database seeders
 │   ├── src/
-│   │   ├── config/         # Database configuration
-│   │   ├── controllers/    # Route controllers
-│   │   ├── middleware/     # Auth middleware
-│   │   ├── models/         # Database models
-│   │   ├── routes/         # API routes
-│   │   └── index.js        # App entry point
+│   │   ├── config/
+│   │   │   ├── database.js     # Database connection
+│   │   │   └── swagger.js      # Swagger/OpenAPI config
+│   │   ├── controllers/
+│   │   │   ├── authController.js
+│   │   │   └── productController.js
+│   │   ├── middleware/
+│   │   │   └── auth.js         # JWT authentication
+│   │   ├── models/
+│   │   │   ├── index.js
+│   │   │   ├── User.js
+│   │   │   └── Product.js
+│   │   ├── routes/
+│   │   │   ├── auth.js
+│   │   │   └── products.js
+│   │   └── index.js            # App entry point
+│   ├── Dockerfile
 │   ├── package.json
-│   └── .env
+│   └── package-lock.json
 ├── frontend/
 │   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
 │   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── context/        # Auth context
-│   │   ├── services/       # API services
+│   │   ├── components/
+│   │   │   ├── Auth.css
+│   │   │   ├── Login.js
+│   │   │   ├── Register.js
+│   │   │   ├── ProductList.js
+│   │   │   ├── ProductList.css
+│   │   │   ├── ProductModal.js
+│   │   │   └── ProductModal.css
+│   │   ├── context/
+│   │   │   └── AuthContext.js  # Auth state management
+│   │   ├── services/
+│   │   │   └── api.js          # Axios API client
 │   │   ├── App.js
-│   │   └── index.js
-│   └── package.json
+│   │   ├── App.css
+│   │   ├── App.test.js
+│   │   ├── index.js
+│   │   ├── index.css
+│   │   ├── logo.svg
+│   │   ├── reportWebVitals.js
+│   │   └── setupTests.js
+│   ├── Dockerfile
+│   ├── serve.json              # Static file server config
+│   ├── package.json
+│   └── package-lock.json
+├── .env                        # Environment variables (not in git)
+├── .env.example               # Environment template
+├── .gitignore
 ├── docker-compose.yml
-├── start.sh               # Quick start script
-├── stop.sh                # Stop services script
 └── README.md
 ```
 
