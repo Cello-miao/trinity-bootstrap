@@ -318,15 +318,4 @@ docker logs trinity-postgres
 cd backend
 # The app will auto-sync on startup in development mode
 npm run dev
-```
 
-### Clear browser cache
-If you see old data, hard refresh: `Ctrl + Shift + R`
-
-## 📞 Support
-
-For issues and questions, please open an issue on GitHub.
-
----
-
-Made with ❤️ using Node.js and React
